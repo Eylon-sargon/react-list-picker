@@ -1,6 +1,6 @@
 {
   "name": "react-list-picker-test",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "typings": "typings/index.d.ts",
   "description": "react-list-picker-test",
   "main": "lib/ChipInput.js",
