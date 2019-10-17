@@ -6,7 +6,6 @@ import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Typography from "@material-ui/core/Typography";
-import PageSlider from "./Slider";
 import ChipInput from "material-ui-chip-input";
 import PropTypes from "prop-types";
 import Dialog from "@material-ui/core/Dialog";
@@ -14,6 +13,9 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { FieldArray } from "react-final-form-arrays";
+import DoneIcon from "@material-ui/icons/Done";
+import Chip from "@material-ui/core/Chip";
+
 import styles from "./styles";
 
 class ListPickerComponent extends Component {
@@ -129,15 +131,21 @@ class ListPickerComponent extends Component {
     return (
       <React.Fragment>
         {/* Popup Initiator*/}
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={() => this.setPopup(true)}
-        >
-          {buttonText}
-        </Button>
-        {/* Content */}
+        <div>
+          <Button
+            variant="outlined"
+            color="primary"
+            onClick={() => this.setPopup(true)}
+          >
+            {buttonText}
+          </Button>
+          {this.props.fields.value &&
+            this.props.fields.value.map(val => (
+              <Chip icon={<DoneIcon />} label={val} variant="outlined" />
+            ))}
+        </div>
 
+        {/* Content */}
         <Dialog
           open={this.state.isOpen}
           aria-labelledby="form-dialog-title"
