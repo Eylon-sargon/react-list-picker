@@ -148,39 +148,6 @@ class ListPickerComponent extends Component {
             {/* Checkbox list */}
             <FormGroup className={classes.itemsWrapper}>
               <FormControl component="fieldset" className={classes.formControl}>
-                {/* Page select */}
-                {pageBreak ? (
-                  <React.Fragment>
-                    <Typography
-                      color="primary"
-                      variant="h6"
-                      component="h6"
-                      style={{
-                        padding: "10px 0",
-                        fontSize: "18px"
-                      }}
-                    >
-                      Select Page
-                    </Typography>
-                    <PageSlider
-                      valueLabelDisplay="auto"
-                      color="primary"
-                      marks
-                      defaultValue={1}
-                      step={1}
-                      min={1}
-                      max={totalPages}
-                      track={false}
-                      className={classes.slider}
-                      onChange={(event, value) =>
-                        this.setState({
-                          currentPage: value - 1
-                        })
-                      }
-                    />
-                  </React.Fragment>
-                ) : null}
-
                 {data
                   .filter((x, i) => {
                     if (!pageBreak) {
