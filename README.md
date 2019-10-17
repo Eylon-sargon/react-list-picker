@@ -26,7 +26,7 @@ This is a simple example showing how `react-list-picker` integrates with `react-
 
 ```javascript
 import React from "react";
-import ListPickerField from "./ChipInput";
+import ListPicker from "react-list-picker";
 import { Form } from "react-final-form";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import arrayMutators from "final-form-arrays";
@@ -59,7 +59,7 @@ function App() {
         }}
         render={({ handleSubmit, ...rest }) => (
           <form onSubmit={handleSubmit} style={{ padding: "50px" }}>
-            <ListPickerField
+            <ListPicker
               name="crazyList"
               data={myOptions}
               isMulty
