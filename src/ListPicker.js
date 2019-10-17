@@ -4,8 +4,9 @@ import Button from "@material-ui/core/Button";
 import FormControl from "@material-ui/core/FormControl";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import Checkbox from "@material-ui/core/Checkbox";
+import Typography from "@material-ui/core/Typography";
+import PageSlider from "./Slider";
 import ChipInput from "material-ui-chip-input";
 import PropTypes from "prop-types";
 import Dialog from "@material-ui/core/Dialog";
@@ -13,35 +14,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { FieldArray } from "react-final-form-arrays";
-
-const styles = theme =>
-  !theme
-    ? {
-        divider: {
-          margin: "20px 0"
-        },
-        formControl: {
-          margin: "20px"
-        },
-
-        submit: {
-          margin: "20px 0",
-          width: "150px"
-        }
-      }
-    : {
-        divider: {
-          margin: theme.spacing(2, 0)
-        },
-        formControl: {
-          margin: theme.spacing(2)
-        },
-
-        submit: {
-          margin: theme.spacing(2, 0),
-          width: "150px"
-        }
-      };
+import styles from "./styles";
 
 class ListPickerComponent extends Component {
   constructor(props) {
@@ -49,7 +22,8 @@ class ListPickerComponent extends Component {
 
     this.state = {
       selected: [],
-      isOpen: false
+      isOpen: false,
+      currentPage: 0
     };
   }
 
@@ -124,9 +98,12 @@ class ListPickerComponent extends Component {
   };
 
   handleReset = () => {
-    for (let i = 0; i < this.props.fields.length; i++) {
-      this.props.fields.remove(i);
+    if (this.props.fields.value) {
+      for (let i = 0; i < this.props.fields.value.length; i++) {
+        this.props.fields.remove(0);
+      }
     }
+
     this.setState({
       selected: [],
       isOpen: true
@@ -140,6 +117,12 @@ class ListPickerComponent extends Component {
       title = "Select fields",
       buttonText = "Select"
     } = this.props;
+
+    let { pageBreak = 0 } = this.props;
+
+    if (data.length >= 50) {
+      pageBreak = 10;
+    }
 
     return (
       <React.Fragment>
@@ -160,39 +143,125 @@ class ListPickerComponent extends Component {
         >
           <DialogTitle id="form-dialog-title">{title}</DialogTitle>
           <DialogContent>
-            <FormControl component="fieldset" className={classes.formControl}>
-              {/* Checkbox list */}
-              <FormGroup>
-                {data.map(key => (
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        color="primary"
-                        value={key}
-                        onChange={this.handleCheckboxChange(key)}
-                        checked={this.isSelected(key)}
-                      />
+            {/* Checkbox list */}
+            <FormGroup className={classes.itemsWrapper}>
+              <FormControl component="fieldset" className={classes.formControl}>
+                {/* Page select */}
+                {pageBreak ? (
+                  <React.Fragment>
+                    <Typography
+                      color="primary"
+                      variant="h6"
+                      component="h6"
+                      style={{
+                        padding: "10px 0",
+                        fontSize: "18px"
+                      }}
+                    >
+                      Select Page
+                    </Typography>
+                    <PageSlider
+                      valueLabelDisplay="auto"
+                      color="primary"
+                      marks
+                      defaultValue={1}
+                      step={1}
+                      min={1}
+                      max={Math.ceil(data.length / pageBreak)}
+                      track={false}
+                      className={classes.slider}
+                      onChange={(event, value) =>
+                        this.setState({
+                          currentPage: value - 1
+                        })
+                      }
+                    />
+                  </React.Fragment>
+                ) : null}
+
+                {data
+                  .filter((x, i) => {
+                    if (!pageBreak) {
+                      return true;
                     }
-                    label={key}
-                  />
-                ))}
-              </FormGroup>
-              <FormHelperText>Selected:</FormHelperText>
-              <FormGroup>
-                {/* Chips */}
-                <ChipInput
-                  value={this.state.selected}
-                  onDelete={chip => this.handleChipDelete(chip)}
-                  fullWidth
-                />
-              </FormGroup>
-            </FormControl>
+
+                    if (
+                      i >= pageBreak * this.state.currentPage &&
+                      i <= pageBreak * this.state.currentPage + pageBreak - 1
+                    ) {
+                      return true;
+                    }
+
+                    return false;
+                  })
+                  .map(key => (
+                    <FormControlLabel
+                      control={
+                        <Checkbox
+                          color="primary"
+                          value={key}
+                          onChange={this.handleCheckboxChange(key)}
+                          checked={this.isSelected(key)}
+                        />
+                      }
+                      label={key}
+                    />
+                  ))}
+              </FormControl>
+            </FormGroup>
+            <FormGroup>
+              {/* Chips */}
+              <ChipInput
+                value={this.state.selected}
+                onDelete={chip => this.handleChipDelete(chip)}
+                fullWidth
+              />
+            </FormGroup>
           </DialogContent>
+
+          {pageBreak ? (
+            <DialogActions>
+              <Button
+                disabled={this.state.currentPage === 0}
+                onClick={() =>
+                  this.setState({
+                    currentPage: this.state.currentPage - 1
+                  })
+                }
+              >
+                {"<"}
+              </Button>
+              <Typography>PAGE</Typography>
+              <Button
+                disabled={
+                  this.state.currentPage >=
+                  Math.ceil(data.length / pageBreak) - 1
+                }
+                onClick={() =>
+                  this.setState({
+                    currentPage: this.state.currentPage + 1
+                  })
+                }
+              >
+                {">"}
+              </Button>
+            </DialogActions>
+          ) : null}
           <DialogActions>
-            <Button onClick={this.handleReset} color="primary">
-              Reset
+            <Button
+              onClick={() => this.setState({ isOpen: false })}
+              color="default"
+            >
+              Close
             </Button>
-            <Button onClick={this.handleSubmit} color="primary">
+            <Button onClick={this.handleReset} color="default">
+              Clear
+            </Button>
+            <Button
+              onClick={this.handleSubmit}
+              variant="contained"
+              color="primary"
+            >
               Save
             </Button>
           </DialogActions>
@@ -208,7 +277,8 @@ ListPickerComponent.propTypes = {
   isMulty: PropTypes.bool,
   fields: PropTypes.any,
   title: PropTypes.string,
-  buttonText: PropTypes.string
+  buttonText: PropTypes.string,
+  pageBreak: PropTypes.number
 };
 
 function ListPicker({ ...restProps }) {
@@ -225,7 +295,8 @@ ListPicker.propTypes = {
   data: PropTypes.arrayOf(PropTypes.string).isRequired,
   isMulty: PropTypes.bool,
   title: PropTypes.string,
-  buttonText: PropTypes.string
+  buttonText: PropTypes.string,
+  pageBreak: PropTypes.number
 };
 
 export default ListPicker;

@@ -6,7 +6,8 @@ export interface ListPickerProps {
   isMulty?: boolean;
   title?: string;
   buttonText?: string;
-  [x: string | number | boolean | undefined]: any;
+  pageBreak?: number;
+  [x: string | number]: any;
 }
 
 declare const ListPicker: React.ComponentType<ListPickerProps>;
