@@ -124,6 +124,8 @@ class ListPickerComponent extends Component {
       pageBreak = 10;
     }
 
+    const totalPages = pageBreak ? Math.ceil(data.length / pageBreak) : 1;
+
     return (
       <React.Fragment>
         {/* Popup Initiator*/}
@@ -167,7 +169,7 @@ class ListPickerComponent extends Component {
                       defaultValue={1}
                       step={1}
                       min={1}
-                      max={Math.ceil(data.length / pageBreak)}
+                      max={totalPages}
                       track={false}
                       className={classes.slider}
                       onChange={(event, value) =>
@@ -219,34 +221,32 @@ class ListPickerComponent extends Component {
             </FormGroup>
           </DialogContent>
 
-          {pageBreak ? (
-            <DialogActions>
-              <Button
-                disabled={this.state.currentPage === 0}
-                onClick={() =>
-                  this.setState({
-                    currentPage: this.state.currentPage - 1
-                  })
-                }
-              >
-                {"<"}
-              </Button>
-              <Typography>PAGE</Typography>
-              <Button
-                disabled={
-                  this.state.currentPage >=
-                  Math.ceil(data.length / pageBreak) - 1
-                }
-                onClick={() =>
-                  this.setState({
-                    currentPage: this.state.currentPage + 1
-                  })
-                }
-              >
-                {">"}
-              </Button>
-            </DialogActions>
-          ) : null}
+          <DialogActions>
+            <Button
+              disabled={!pageBreak || this.state.currentPage === 0}
+              onClick={() =>
+                this.setState({
+                  currentPage: this.state.currentPage - 1
+                })
+              }
+            >
+              {"<"}
+            </Button>
+            <Typography>
+              {this.state.currentPage + 1} of {totalPages}
+            </Typography>
+            <Button
+              disabled={!pageBreak || this.state.currentPage >= totalPages - 1}
+              onClick={() =>
+                this.setState({
+                  currentPage: this.state.currentPage + 1
+                })
+              }
+            >
+              {">"}
+            </Button>
+          </DialogActions>
+
           <DialogActions>
             <Button
               onClick={() => this.setState({ isOpen: false })}
