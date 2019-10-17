@@ -1,13 +1,16 @@
-"use strict";
-import React, { Component } from "react";
+import React from "react";
 import ListPickerField from "./ChipInput";
-import { Form, Field } from "react-final-form";
+import { Form } from "react-final-form";
 import { createMuiTheme, MuiThemeProvider } from "@material-ui/core/styles";
 import arrayMutators from "final-form-arrays";
 
 const myOptions = ["Meat Lover", "Veggie Heaven", "Hawaii-5-0", "Inferno"];
 
-const onSubmit = values => console.log(values);
+let output = [];
+
+const onSubmit = values => {
+  output = values.crazyList;
+};
 
 const theme = createMuiTheme({
   palette: {
@@ -25,19 +28,22 @@ function App() {
       <Form
         onSubmit={onSubmit}
         mutators={{
-          ...arrayMutators
+          ...arrayMutators // super important to include!!!
         }}
         render={({ handleSubmit, ...rest }) => (
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} style={{ padding: "50px" }}>
             <ListPickerField
-              name="list"
+              name="crazyList"
               data={myOptions}
               isMulty
-              title="Go crazty"
-              buttonText="Click me nagha"
+              title="My crazy list"
+              buttonText="React List Picker"
             />
-
+            <hr />
             <button type="submit">Submit</button>
+            {output.map(val => (
+              <h6>{val}</h6>
+            ))}
           </form>
         )}
       />

@@ -1,9 +1,9 @@
 {
   "name": "react-list-picker-test",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "typings": "typings/index.d.ts",
   "description": "react-list-picker-test",
-  "main": "lib/ChipInput.js",
+  "main": "lib/ListPicker.js",
   "files": [
     "lib/**/*.js",
     "typings/*.d.ts",
@@ -21,21 +21,22 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TeamWertarbyte/material-ui-chip-input.git"
+    "url": "git+https://github.com/Eylon-sargon/react-list-picker"
   },
   "keywords": [
     "react",
     "material",
-    "chip",
+    "final-form",
     "input",
-    "tags"
+    "select",
+    "list"
   ],
-  "author": "Wertarbyte <kontakt@wertarbyte.com> (https://wertarbyte.com)",
+  "author": "raymaen007",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/TeamWertarbyte/material-ui-chip-input/issues"
+    "url": "https://github.com/Eylon-sargon/react-list-picker/issues"
   },
-  "homepage": "https://github.com/TeamWertarbyte/material-ui-chip-input#readme",
+  "homepage": "https://github.com/Eylon-sargon/react-list-picker#readme",
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.2.2",
