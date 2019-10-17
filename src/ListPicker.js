@@ -43,7 +43,7 @@ const styles = theme =>
         }
       };
 
-class ListPicker extends Component {
+class ListPickerComponent extends Component {
   constructor(props) {
     super(props);
 
@@ -57,10 +57,18 @@ class ListPicker extends Component {
    * Change popup state (open or close)
    * @param isOpen : boolean
    */
-  setPopup = isOpen =>
+  setPopup = isOpen => {
+    console.log(this.props.fields.value, " props");
+    console.log(this.state.selected, " state");
+    if (!this.state.isOpen && isOpen) {
+      this.setState({
+        selected: this.props.fields.value || []
+      });
+    }
     this.setState({
       isOpen
     });
+  };
 
   /**
    * Checks if key is already selected
@@ -120,7 +128,8 @@ class ListPicker extends Component {
       this.props.fields.remove(i);
     }
     this.setState({
-      selected: []
+      selected: [],
+      isOpen: true
     });
   };
 
@@ -146,7 +155,6 @@ class ListPicker extends Component {
 
         <Dialog
           open={this.state.isOpen}
-          onClose={() => this.setPopup(false)}
           aria-labelledby="form-dialog-title"
           fullWidth="md"
         >
@@ -194,7 +202,7 @@ class ListPicker extends Component {
   }
 }
 
-ListPicker.propTypes = {
+ListPickerComponent.propTypes = {
   data: PropTypes.arrayOf(PropTypes.string).isRequired,
   onSubmit: PropTypes.func,
   isMulty: PropTypes.bool,
@@ -203,13 +211,16 @@ ListPicker.propTypes = {
   buttonText: PropTypes.string
 };
 
-function Index({ ...restProps }) {
+function ListPicker({ ...restProps }) {
   return (
-    <FieldArray component={withStyles(styles)(ListPicker)} {...restProps} />
+    <FieldArray
+      component={withStyles(styles)(ListPickerComponent)}
+      {...restProps}
+    />
   );
 }
 
-Index.propTypes = {
+ListPicker.propTypes = {
   name: PropTypes.string.isRequired,
   data: PropTypes.arrayOf(PropTypes.string).isRequired,
   isMulty: PropTypes.bool,
@@ -217,4 +228,4 @@ Index.propTypes = {
   buttonText: PropTypes.string
 };
 
-export default Index;
+export default ListPicker;

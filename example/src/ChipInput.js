@@ -249,26 +249,35 @@ var styles = function styles(theme) {
       };
 };
 
-var ListPicker =
+var ListPickerComponent =
   /*#__PURE__*/
   (function(_Component) {
-    _inherits(ListPicker, _Component);
+    _inherits(ListPickerComponent, _Component);
 
-    function ListPicker(props) {
+    function ListPickerComponent(props) {
       var _this;
 
-      _classCallCheck(this, ListPicker);
+      _classCallCheck(this, ListPickerComponent);
 
       _this = _possibleConstructorReturn(
         this,
-        _getPrototypeOf(ListPicker).call(this, props)
+        _getPrototypeOf(ListPickerComponent).call(this, props)
       );
 
       _defineProperty(
         _assertThisInitialized(_assertThisInitialized(_this)),
         "setPopup",
         function(isOpen) {
-          return _this.setState({
+          console.log(_this.props.fields.value, " props");
+          console.log(_this.state.selected, " state");
+
+          if (!_this.state.isOpen && isOpen) {
+            _this.setState({
+              selected: _this.props.fields.value || []
+            });
+          }
+
+          _this.setState({
             isOpen: isOpen
           });
         }
@@ -324,7 +333,15 @@ var ListPicker =
         _assertThisInitialized(_assertThisInitialized(_this)),
         "handleSubmit",
         function() {
-          console.log(_this.props);
+          if (_this.props.fields.value) {
+            for (
+              var index = 0;
+              index < _this.props.fields.value.length;
+              index++
+            ) {
+              _this.props.fields.remove(0);
+            }
+          }
 
           _this.state.selected.forEach(function(key) {
             _this.props.fields.push(key);
@@ -345,7 +362,8 @@ var ListPicker =
           }
 
           _this.setState({
-            selected: []
+            selected: [],
+            isOpen: true
           });
         }
       );
@@ -361,7 +379,7 @@ var ListPicker =
      * @param isOpen : boolean
      */
 
-    _createClass(ListPicker, [
+    _createClass(ListPickerComponent, [
       {
         key: "render",
         value: function render() {
@@ -398,9 +416,6 @@ var ListPicker =
               _Dialog.default,
               {
                 open: this.state.isOpen,
-                onClose: function onClose() {
-                  return _this2.setPopup(false);
-                },
                 "aria-labelledby": "form-dialog-title",
                 fullWidth: "md"
               },
@@ -485,10 +500,10 @@ var ListPicker =
       }
     ]);
 
-    return ListPicker;
+    return ListPickerComponent;
   })(_react.Component);
 
-ListPicker.propTypes = {
+ListPickerComponent.propTypes = {
   data: _propTypes.default.arrayOf(_propTypes.default.string).isRequired,
   onSubmit: _propTypes.default.func,
   isMulty: _propTypes.default.bool,
@@ -497,26 +512,26 @@ ListPicker.propTypes = {
   buttonText: _propTypes.default.string
 };
 
-function Index(_ref) {
+function ListPicker(_ref) {
   var restProps = _extends({}, _ref);
 
   return _react.default.createElement(
     _reactFinalFormArrays.FieldArray,
     _extends(
       {
-        component: (0, _core.withStyles)(styles)(ListPicker)
+        component: (0, _core.withStyles)(styles)(ListPickerComponent)
       },
       restProps
     )
   );
 }
 
-Index.propTypes = {
+ListPicker.propTypes = {
   name: _propTypes.default.string.isRequired,
   data: _propTypes.default.arrayOf(_propTypes.default.string).isRequired,
   isMulty: _propTypes.default.bool,
   title: _propTypes.default.string,
   buttonText: _propTypes.default.string
 };
-var _default = Index;
+var _default = ListPicker;
 exports.default = _default;
