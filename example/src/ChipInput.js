@@ -137,18 +137,20 @@ class ListPickerComponent extends Component {
             color="primary"
             className={classes.button}
             endIcon={<AddCircleRoundedIcon />}
+            onClick={() => this.setPopup(true)}
+            style={{ marginRight: "10px" }}
           >
             {buttonText}
           </Button>
 
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={() => this.setPopup(true)}
-          ></Button>
           {this.props.fields.value &&
             this.props.fields.value.map(val => (
-              <Chip label={val} color="primary" />
+              <Chip
+                label={val}
+                color="secondary"
+                clickable
+                style={{ margin: "0 5px" }}
+              />
             ))}
         </div>
 
@@ -254,6 +256,7 @@ class ListPickerComponent extends Component {
 }
 
 ListPickerComponent.propTypes = {
+  name: PropTypes.string.isRequired,
   data: PropTypes.arrayOf(PropTypes.string).isRequired,
   onSubmit: PropTypes.func,
   isMulty: PropTypes.bool,

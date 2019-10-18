@@ -223,8 +223,8 @@ const onSubmit = values => {
 
 const theme = createMuiTheme({
   palette: {
-    primary: { main: "#333" },
-    secondary: { main: "#000" }
+    primary: { main: "#f6f078" },
+    secondary: { main: "#01d28e" }
   },
   status: {
     danger: "orange"
@@ -246,7 +246,6 @@ function App() {
               data={myOptions}
               isMulty
               title="My crazy list"
-              buttonText="React List Picker"
             />
             <hr />
             <button type="submit">Submit</button>
