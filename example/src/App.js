@@ -224,7 +224,7 @@ const onSubmit = values => {
 const theme = createMuiTheme({
   palette: {
     primary: { main: "#f6f078" },
-    secondary: { main: "#01d28e" }
+    secondary: { main: "#fff078" }
   },
   status: {
     danger: "orange"

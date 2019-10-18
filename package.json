@@ -1,6 +1,6 @@
 {
   "name": "react-list-picker",
-  "version": "2.5.2",
+  "version": "2.5.3",
   "typings": "typings/index.d.ts",
   "description": "This project provides a List Picker Form field for Material-UI and React-Final-Form. The purpose is to have a compelling dymanic way for a user to select input in a form.",
   "main": "lib/ListPicker.js",
