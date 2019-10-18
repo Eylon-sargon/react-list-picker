@@ -1,22 +1,22 @@
 import React, { Component } from "react";
+import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
-import FormControl from "@material-ui/core/FormControl";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import Typography from "@material-ui/core/Typography";
-import ChipInput from "material-ui-chip-input";
-import PropTypes from "prop-types";
+import Chip from "@material-ui/core/Chip";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import FormControl from "@material-ui/core/FormControl";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Typography from "@material-ui/core/Typography";
+import ChipInput from "material-ui-chip-input";
 import { FieldArray } from "react-final-form-arrays";
 import AddCircleRoundedIcon from "@material-ui/icons/AddCircleRounded";
-import Chip from "@material-ui/core/Chip";
-
 import styles from "./styles";
+import SearchBar from "./SearchBar";
 
 class ListPickerComponent extends Component {
   constructor(props) {
@@ -25,7 +25,8 @@ class ListPickerComponent extends Component {
     this.state = {
       selected: [],
       isOpen: false,
-      currentPage: 0
+      currentPage: 0,
+      searchValue: ""
     };
   }
 
@@ -112,6 +113,11 @@ class ListPickerComponent extends Component {
     });
   };
 
+  onSearchChange = searchValue =>
+    this.setState({
+      searchValue
+    });
+
   render() {
     const {
       classes,
@@ -160,7 +166,11 @@ class ListPickerComponent extends Component {
           aria-labelledby="form-dialog-title"
           fullWidth="md"
         >
-          <DialogTitle id="form-dialog-title">{title}</DialogTitle>
+          <DialogTitle id="form-dialog-title">
+            {title} : {this.state.searchValue}
+          </DialogTitle>
+          <SearchBar onSearchChange={this.onSearchChange} />
+
           <DialogContent>
             {/* Checkbox list */}
             <FormGroup className={classes.itemsWrapper}>
