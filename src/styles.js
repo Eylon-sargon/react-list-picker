@@ -16,7 +16,7 @@ const styles = () => ({
     marginBottom: 15
   },
   itemsWrapper: {
-    minHeight: "350px"
+    minHeight: "200px"
   }
 });
 

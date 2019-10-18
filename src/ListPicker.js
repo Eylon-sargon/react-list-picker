@@ -83,6 +83,7 @@ class ListPickerComponent extends Component {
 
   /**
    * Add all selected items to the form fields value
+   * then sends all the selected values to the Final Form parent container
    */
   handleSubmit = () => {
     if (this.props.fields.value) {
@@ -100,6 +101,9 @@ class ListPickerComponent extends Component {
     //  this.state.selected.foreach(key => console.log(key));
   };
 
+  /**
+   * Clear all selected values
+   */
   handleReset = () => {
     if (this.props.fields.value) {
       for (let i = 0; i < this.props.fields.value.length; i++) {
@@ -113,10 +117,43 @@ class ListPickerComponent extends Component {
     });
   };
 
+  /**
+   * Update search state
+   * @param searchValue : string | user search input
+   */
   onSearchChange = searchValue =>
     this.setState({
       searchValue
     });
+
+  /**
+   * Filters values displayed to the user (checkboxes)
+   * First filters by search, and the applies pagnation filtering
+   * @param data : string | all data
+   * @param pageBreak : number | items per page
+   */
+  filterValues = (data, pageBreak) => {
+    return data
+      .filter(
+        key =>
+          key.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+          this.state.searchValue === ""
+      )
+      .filter((x, i) => {
+        if (!pageBreak) {
+          return true;
+        }
+
+        if (
+          i >= pageBreak * this.state.currentPage &&
+          i <= pageBreak * this.state.currentPage + pageBreak - 1
+        ) {
+          return true;
+        }
+
+        return false;
+      });
+  };
 
   render() {
     const {
@@ -166,43 +203,26 @@ class ListPickerComponent extends Component {
           aria-labelledby="form-dialog-title"
           fullWidth="md"
         >
-          <DialogTitle id="form-dialog-title">
-            {title} : {this.state.searchValue}
-          </DialogTitle>
+          <DialogTitle id="form-dialog-title">{title}</DialogTitle>
           <SearchBar onSearchChange={this.onSearchChange} />
 
           <DialogContent>
             {/* Checkbox list */}
             <FormGroup className={classes.itemsWrapper}>
               <FormControl component="fieldset" className={classes.formControl}>
-                {data
-                  .filter((x, i) => {
-                    if (!pageBreak) {
-                      return true;
+                {this.filterValues(data, pageBreak).map(key => (
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        color="primary"
+                        value={key}
+                        onChange={this.handleCheckboxChange(key)}
+                        checked={this.isSelected(key)}
+                      />
                     }
-
-                    if (
-                      i >= pageBreak * this.state.currentPage &&
-                      i <= pageBreak * this.state.currentPage + pageBreak - 1
-                    ) {
-                      return true;
-                    }
-
-                    return false;
-                  })
-                  .map(key => (
-                    <FormControlLabel
-                      control={
-                        <Checkbox
-                          color="primary"
-                          value={key}
-                          onChange={this.handleCheckboxChange(key)}
-                          checked={this.isSelected(key)}
-                        />
-                      }
-                      label={key}
-                    />
-                  ))}
+                    label={key}
+                  />
+                ))}
               </FormControl>
             </FormGroup>
             <FormGroup>
