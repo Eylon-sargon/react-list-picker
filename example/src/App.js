@@ -218,7 +218,7 @@ const myOptions = [
 let output = [];
 
 const onSubmit = values => {
-  output = values.crazyList;
+  output = values.crazyList || [];
 };
 
 const theme = createMuiTheme({
