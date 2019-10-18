@@ -13,7 +13,7 @@ import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import { FieldArray } from "react-final-form-arrays";
-import AddRoundedIcon from "@material-ui/icons/AddRounded";
+import AddCircleRoundedIcon from "@material-ui/icons/AddCircleRounded";
 import Chip from "@material-ui/core/Chip";
 
 import styles from "./styles";
@@ -130,18 +130,25 @@ class ListPickerComponent extends Component {
 
     return (
       <React.Fragment>
-        {/* Popup Initiator*/}
+        {/* Popup Initiator */}
         <div>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            endIcon={<AddCircleRoundedIcon />}
+          >
+            {buttonText}
+          </Button>
+
           <Button
             variant="outlined"
             color="primary"
             onClick={() => this.setPopup(true)}
-          >
-            {buttonText}
-          </Button>
+          ></Button>
           {this.props.fields.value &&
             this.props.fields.value.map(val => (
-              <Chip icon={AddRoundedIcon} label={val} variant="outlined" />
+              <Chip label={val} color="primary" />
             ))}
         </div>
 
