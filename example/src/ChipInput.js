@@ -130,7 +130,7 @@ class ListPickerComponent extends Component {
    * Filters values displayed to the user (checkboxes)
    * First filters by search, and the applies pagnation filtering
    * @param data : string | all data
-   * @param pageBreak : number | items per page
+   * @param pageBreak : number | items allowed per page
    */
   filterValues = (data, pageBreak) => {
     return data
@@ -155,6 +155,17 @@ class ListPickerComponent extends Component {
       });
   };
 
+  /**
+   * Returns the length of data after search filtering
+   * @param data : string | all data
+   */
+  currentDataLength = data =>
+    data.filter(
+      key =>
+        key.toLowerCase().includes(this.state.searchValue.toLowerCase()) ||
+        this.state.searchValue === ""
+    ).length;
+
   render() {
     const {
       classes,
@@ -169,7 +180,9 @@ class ListPickerComponent extends Component {
       pageBreak = 10;
     }
 
-    const totalPages = pageBreak ? Math.ceil(data.length / pageBreak) : 1;
+    const totalPages = pageBreak
+      ? Math.ceil(this.currentDataLength(data) / pageBreak)
+      : 1;
 
     return (
       <React.Fragment>
