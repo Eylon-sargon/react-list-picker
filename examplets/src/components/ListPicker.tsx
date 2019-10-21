@@ -1,3 +1,4 @@
+import * as ListPicker from "./ListPickerComponent";
 import * as React from "react";
 
 export interface ListPickerProps {
@@ -10,5 +11,6 @@ export interface ListPickerProps {
   [x: string]: any;
 }
 
-declare const ListPicker: React.ComponentType<ListPickerProps>;
-export default Index;
+export default function ListPickerWrapper({ ...props }: ListPickerProps) {
+  return <ListPicker.default {...props} />;
+}
