@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core";
 import Button from "@material-ui/core/Button";
 import Checkbox from "@material-ui/core/Checkbox";
+import Container from "@material-ui/core/Container";
 import Chip from "@material-ui/core/Chip";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -10,14 +11,17 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import FormControl from "@material-ui/core/FormControl";
 import FormGroup from "@material-ui/core/FormGroup";
+import Grid from "@material-ui/core/Grid";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Typography from "@material-ui/core/Typography";
 import ChipInput from "material-ui-chip-input";
 import { FieldArray } from "react-final-form-arrays";
-import AddCircleRoundedIcon from "@material-ui/icons/AddCircleRounded";
+import ListIcon from "@material-ui/icons/List";
 import styles from "./styles";
 import SearchBar from "./SearchBar";
 
+// todo - convert to ts
+// Currently dependancies used have limited typescript support
 class ListPickerComponent extends Component {
   constructor(props) {
     super(props);
@@ -166,12 +170,18 @@ class ListPickerComponent extends Component {
         this.state.searchValue === ""
     ).length;
 
+  /**
+   * Removes chip from props - initiated from the 'outside' ChipInput
+   * @param index : number
+   */
+  removeChipFromFieldProps = index => this.props.fields.remove(index);
+
   render() {
     const {
       classes,
       data,
-      title = "Select fields",
-      buttonText = "Select"
+      title = "Select Fields",
+      label = "Select Fields"
     } = this.props;
 
     let { pageBreak = 0 } = this.props;
@@ -188,18 +198,27 @@ class ListPickerComponent extends Component {
       <React.Fragment>
         {/* Popup Initiator */}
         <div>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            endIcon={<AddCircleRoundedIcon />}
-            onClick={() => this.setPopup(true)}
-            style={{ marginRight: "10px" }}
-          >
-            {buttonText}
-          </Button>
+          <div className={classes.margin}>
+            <Grid container spacing={1} alignItems="flex-end">
+              <Grid item>
+                <ListIcon fontSize="large" />
+              </Grid>
+              <Grid item xs={11}>
+                <ChipInput
+                  value={this.props.fields.value || []}
+                  onDelete={(chip, index) =>
+                    this.removeChipFromFieldProps(index)
+                  }
+                  fullWidth
+                  clearInputValueOnChange
+                  label={label}
+                  onFocus={() => this.setPopup(true)}
+                />
+              </Grid>
+            </Grid>
+          </div>
 
-          {this.props.fields.value &&
+          {/* {this.props.fields.value &&
             this.props.fields.value.map(val => (
               <Chip
                 label={val}
@@ -207,7 +226,7 @@ class ListPickerComponent extends Component {
                 clickable
                 style={{ margin: "0 5px" }}
               />
-            ))}
+            ))} */}
         </div>
 
         {/* Content */}
@@ -305,7 +324,7 @@ ListPickerComponent.propTypes = {
   isMulty: PropTypes.bool,
   fields: PropTypes.any,
   title: PropTypes.string,
-  buttonText: PropTypes.string,
+  label: PropTypes.string,
   pageBreak: PropTypes.number
 };
 
@@ -323,7 +342,7 @@ ListPicker.propTypes = {
   data: PropTypes.arrayOf(PropTypes.string).isRequired,
   isMulty: PropTypes.bool,
   title: PropTypes.string,
-  buttonText: PropTypes.string,
+  label: PropTypes.string,
   pageBreak: PropTypes.number
 };
 

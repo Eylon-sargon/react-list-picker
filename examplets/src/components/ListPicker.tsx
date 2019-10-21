@@ -6,7 +6,7 @@ export interface ListPickerProps {
   data: string[];
   isMulty?: boolean;
   title?: string;
-  buttonText?: string;
+  label?: string;
   pageBreak?: number;
   [x: string]: any;
 }

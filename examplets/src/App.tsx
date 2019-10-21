@@ -242,7 +242,8 @@ function App() {
               name="crazyList"
               data={myOptions}
               isMulty
-              title="My crazy list"
+              title="Select from this list"
+              label="Select Items"
             />
             <hr />
             <button type="submit">Submit</button>

@@ -17,6 +17,16 @@ const styles = () => ({
   },
   itemsWrapper: {
     minHeight: "200px"
+  },
+  margin: {
+    margin: "5px"
+  },
+  chipInput: {
+    position: "relative",
+    marginLeft: "20px"
+  },
+  chipInputStartIcon: {
+    left: 24
   }
 });
 
